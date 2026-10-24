@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>grandMA3 AI Plugin: let Claude or ChatGPT inspect and edit your grandMA3 show</title>
+<meta name="description" content="Open-source grandMA3 onPC Lua plugin plus a Python MCP server. Let an AI assistant inspect and edit your showfile with previews, undo journal and a localhost-only bridge.">
+<meta name="theme-color" content="#07080b">
+<meta property="og:title" content="grandMA3 AI Plugin">
+<meta property="og:description" content="MCP bridge for grandMA3 onPC: inspect and edit your show from Claude, ChatGPT or Codex, with preview, journal and rollback.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2307080b'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23ffb020'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="dot" aria-hidden="true"></span>grandMA3 AI Plugin</a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#safety">Safety</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#install">Install</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="https://github.com/juandozuna/grandma3_ai_plugin" rel="noopener">GitHub</a></li>
+      </ul>
+    </nav>
+    <a class="btn primary sm" href="https://github.com/juandozuna/grandma3_ai_plugin/releases/latest/download/grandma3-ai-plugin.zip">Download</a>
+  </div>
+</header>
+
+<main id="main">
+<!-- HERO -->
+<div class="hero" id="top">
+  <div class="wrap grid">
+    <div>
+      <div class="eyebrow">Open source &middot; grandMA3 onPC 2.5.1.0</div>
+      <h1>Talk to your <em>grandMA3 show</em>.</h1>
+      <p class="lead">A Lua plugin and an MCP server that let Claude, ChatGPT, Codex or any MCP client read your patch, groups, presets and sequences, and make changes you can preview first and undo afterwards.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/juandozuna/grandma3_ai_plugin/releases/latest/download/grandma3-ai-plugin.zip" download>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16"/></svg>
+          Download grandma3-ai-plugin.zip
+        </a>
+        <a class="btn" href="#install">Installation guide</a>
+      </div>
+      <div class="meta"><span>Python 3 standard library only</span><span>No AI key stored</span><span>Bridge on 127.0.0.1:17844</span></div>
+    </div>
+    <div class="hero-art">
+      <svg viewBox="0 0 560 420" role="img" aria-labelledby="heroT">
+        <title id="heroT">Illustration: four moving-head fixtures on a truss casting beams onto a stage, above a console strip with faders</title>
+        <defs>
+          <linearGradient id="bm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd37a" stop-opacity=".95"/><stop offset="1" stop-color="#ffb020" stop-opacity=".02"/></linearGradient>
+          <linearGradient id="bc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8be8ff" stop-opacity=".9"/><stop offset="1" stop-color="#37d6ff" stop-opacity=".02"/></linearGradient>
+          <linearGradient id="bp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9bd0" stop-opacity=".9"/><stop offset="1" stop-color="#ff4fa3" stop-opacity=".02"/></linearGradient>
+          <radialGradient id="floor" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffb020" stop-opacity=".25"/><stop offset="1" stop-color="#ffb020" stop-opacity="0"/></radialGradient>
+          <filter id="blur"><feGaussianBlur stdDeviation="2.2"/></filter>
+          <pattern id="gr" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0H0V28" fill="none" stroke="#141925" stroke-width="1"/></pattern>
+        </defs>
+        <rect width="560" height="420" fill="#05060a"/>
+        <rect width="560" height="300" fill="url(#gr)"/>
+        <!-- truss -->
+        <g stroke="#3a4358" stroke-width="2" fill="none"><path d="M30 40H530M30 56H530"/><path d="M30 40l16 16 16-16 16 16 16-16 16 16 16-16 16 16 16-16 16 16 16-16 16 16 16-16 16 16 16-16 16 16 16-16 16 16 16-16 16 16 16-16 16 16 16-16 16 16 16-16 16 16 16-16 16 16 16-16 16 16 16-16 16 16 16-16"/></g>
+        <!-- beams -->
+        <g filter="url(#blur)">
+          <g class="beam" style="transform-origin:110px 66px"><polygon points="106,66 114,66 190,290 40,290" fill="url(#bm)"/></g>
+          <g class="beam b2" style="transform-origin:230px 66px"><polygon points="226,66 234,66 330,290 150,290" fill="url(#bc)"/></g>
+          <g class="beam b3" style="transform-origin:340px 66px"><polygon points="336,66 344,66 450,290 270,290" fill="url(#bp)"/></g>
+          <g class="beam b4" style="transform-origin:450px 66px"><polygon points="446,66 454,66 540,290 380,290" fill="url(#bm)"/></g>
+        </g>
+        <!-- fixtures -->
+        <g fill="#1a2030" stroke="#59627a" stroke-width="1.5">
+          <rect x="98" y="56" width="24" height="16" rx="4"/><rect x="218" y="56" width="24" height="16" rx="4"/>
+          <rect x="328" y="56" width="24" height="16" rx="4"/><rect x="438" y="56" width="24" height="16" rx="4"/>
+        </g>
+        <g fill="#ffd37a"><circle cx="110" cy="72" r="3.5"/><circle cx="230" cy="72" r="3.5" fill="#8be8ff"/><circle cx="340" cy="72" r="3.5" fill="#ff9bd0"/><circle cx="450" cy="72" r="3.5"/></g>
+        <!-- stage -->
+        <ellipse cx="280" cy="292" rx="260" ry="26" fill="url(#floor)"/>
+        <path d="M40 290H520L548 312H12Z" fill="#0f131c" stroke="#2a3245"/>
+        <!-- console strip -->
+        <rect x="14" y="318" width="532" height="92" rx="10" fill="#0d1017" stroke="#222836"/>
+        <g stroke="#262d3f"><path d="M44 334v62M92 334v62M140 334v62M188 334v62M236 334v62M284 334v62M332 334v62M380 334v62"/></g>
+        <g fill="#ffb020"><rect class="fader" x="35" y="338" width="18" height="10" rx="2"/><rect class="fader f2" x="83" y="352" width="18" height="10" rx="2"/><rect class="fader f3" x="131" y="342" width="18" height="10" rx="2"/><rect class="fader f4" x="179" y="338" width="18" height="10" rx="2"/><rect class="fader f2" x="227" y="346" width="18" height="10" rx="2"/><rect class="fader f3" x="275" y="338" width="18" height="10" rx="2"/><rect class="fader" x="323" y="356" width="18" height="10" rx="2" fill="#37d6ff"/><rect class="fader f4" x="371" y="340" width="18" height="10" rx="2" fill="#ff4fa3"/></g>
+        <!-- mini chat -->
+        <rect x="414" y="332" width="120" height="64" rx="8" fill="#11141b" stroke="#2e3547"/>
+        <text x="424" y="351" font-family="monospace" font-size="9" fill="#ff4fa3">&gt; group the movers</text>
+        <text x="424" y="366" font-family="monospace" font-size="9" fill="#9aa3b5">preview: 3 actions</text>
+        <text x="424" y="381" font-family="monospace" font-size="9" fill="#44e08a">confirm=true  OK</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT / HOW -->
+<section id="how">
+  <div class="wrap">
+    <div class="eyebrow">How it works</div>
+    <h2>An AI window on one side, your console on the other.</h2>
+    <p class="sub">Two small pieces. A <strong>plugin</strong> runs inside grandMA3 onPC and listens on localhost. An <strong>MCP server</strong> (Python, standard library only) is launched by your AI client and translates tool calls into requests to that plugin. Your AI client supplies its own model and credentials; nothing here needs an AI provider key.</p>
+
+    <div class="arch">
+      <svg viewBox="0 0 900 250" role="img" aria-labelledby="archT">
+        <title id="archT">Architecture: AI client talks MCP over stdio to companion_server.py, which talks JSON over localhost TCP port 17844 to the grandMA3 onPC plugin</title>
+        <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#ffb020"/></marker></defs>
+        <g font-family="ui-monospace,Menlo,monospace">
+          <rect x="10" y="60" width="180" height="120" rx="12" fill="#11141b" stroke="#2e3547"/>
+          <text x="100" y="98" text-anchor="middle" fill="#e7eaf1" font-size="15" font-weight="700">AI client</text>
+          <text x="100" y="120" text-anchor="middle" fill="#9aa3b5" font-size="11">Claude Desktop / Code</text>
+          <text x="100" y="138" text-anchor="middle" fill="#9aa3b5" font-size="11">ChatGPT (tunnel) / Codex</text>
+          <text x="100" y="160" text-anchor="middle" fill="#ff4fa3" font-size="11">your model + keys</text>
+
+          <rect x="260" y="60" width="190" height="120" rx="12" fill="#11141b" stroke="#37d6ff"/>
+          <text x="355" y="98" text-anchor="middle" fill="#e7eaf1" font-size="15" font-weight="700">MCP server</text>
+          <text x="355" y="120" text-anchor="middle" fill="#9aa3b5" font-size="11">companion_server.py</text>
+          <text x="355" y="138" text-anchor="middle" fill="#9aa3b5" font-size="11">journal, MVR, patterns</text>
+          <text x="355" y="160" text-anchor="middle" fill="#37d6ff" font-size="11">stdio, Python 3</text>
+
+          <rect x="520" y="60" width="150" height="120" rx="12" fill="#11141b" stroke="#2e3547"/>
+          <text x="595" y="98" text-anchor="middle" fill="#e7eaf1" font-size="15" font-weight="700">Bridge</text>
+          <text x="595" y="124" text-anchor="middle" fill="#9aa3b5" font-size="11">JSON over TCP</text>
+          <text x="595" y="146" text-anchor="middle" fill="#ffb020" font-size="13" font-weight="700">127.0.0.1:17844</text>
+          <text x="595" y="164" text-anchor="middle" fill="#9aa3b5" font-size="10">localhost only</text>
+
+          <rect x="740" y="60" width="150" height="120" rx="12" fill="#11141b" stroke="#ffb020"/>
+          <text x="815" y="98" text-anchor="middle" fill="#e7eaf1" font-size="15" font-weight="700">grandMA3 onPC</text>
+          <text x="815" y="120" text-anchor="middle" fill="#9aa3b5" font-size="11">Lua plugin</text>
+          <text x="815" y="138" text-anchor="middle" fill="#9aa3b5" font-size="11">your showfile</text>
+          <text x="815" y="160" text-anchor="middle" fill="#ffb020" font-size="11">Oops groups</text>
+
+          <g stroke="#ffb020" stroke-width="2" fill="none" marker-end="url(#ar)" marker-start="url(#ar)">
+            <path class="pulse" d="M192 120H258"/><path class="pulse" d="M452 120H518"/><path class="pulse" d="M672 120H738"/>
+          </g>
+          <text x="225" y="108" text-anchor="middle" fill="#6b7488" font-size="10">MCP</text>
+          <text x="485" y="108" text-anchor="middle" fill="#6b7488" font-size="10">TCP</text>
+          <text x="705" y="108" text-anchor="middle" fill="#6b7488" font-size="10">Lua</text>
+          <text x="450" y="226" text-anchor="middle" fill="#6b7488" font-size="11">one JSON request and one JSON response per localhost connection</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="cols3" style="margin-top:22px">
+      <div class="card"><h3>The plugin</h3><p><code>grandma3_ai_assistant.lua</code> is a ComponentLua that opens the localhost bridge when you run <code>Plugin &lt;n&gt; "Start"</code>. It reads objects, runs validated commands and Lua, and logs every undo group it creates.</p></div>
+      <div class="card"><h3>The MCP server</h3><p><code>companion_server.py</code> exposes the tools (<code>ma3_status</code>, <code>ma3_execute</code>, <code>ma3_lua</code> and more), appends <code>/noconfirm</code> to console commands and keeps the change journal.</p></div>
+      <div class="card"><h3>Your AI client</h3><p>Claude, ChatGPT (through a tunnel), Codex or any MCP client. The client shows you previews and asks before it executes. It brings its own model and credentials.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SAFETY -->
+<section id="safety" class="alt">
+  <div class="wrap">
+    <div class="eyebrow">Safety model</div>
+    <h2>Built so a bad idea is cheap to take back.</h2>
+    <p class="sub">An AI that can edit a live show needs guard rails. These are the ones the project actually implements. Always test on a copy of the showfile first.</p>
+    <div class="safety">
+      <div class="card"><div class="num">01 PREVIEW</div><h3>Preview before execute</h3><p><code>ma3_execute</code> with <code>confirm=false</code> validates and previews actions. The client shows you the plan and only then calls it with <code>confirm=true</code>.</p></div>
+      <div class="card"><div class="num">02 NO POPUPS</div><h3>/noconfirm handling</h3><p>The MCP appends <code>/noconfirm</code> to every console command (also in batches and in Lua <code>Cmd</code> calls) so a console dialog cannot stall the bridge. Explicit <code>/confirm</code> is removed; quoted text is preserved.</p></div>
+      <div class="card"><div class="num">03 UNDO</div><h3>Journal and rollback</h3><p>Every confirmed batch and every <code>ma3_lua</code> call runs in one Oops group and is written to <code>journal.json</code>. <code>ma3_rollback</code> undoes newest first and reports exactly what it could and could not undo.</p></div>
+      <div class="card"><div class="num">04 LOCAL</div><h3>Localhost only</h3><p>The bridge binds <code>127.0.0.1:17844</code>. Exposing it to a network is intentionally unsupported. Credentials and workflow data stay outside the showfile.</p></div>
+    </div>
+    <div class="cols2" style="margin-top:18px">
+      <div class="card">
+        <h3>What a preview looks like</h3>
+        <div class="code" style="margin-bottom:0"><pre><span class="c">// AI calls ma3_execute with confirm=false</span>
+Store Group 21 /noconfirm
+Label Group 21 "Movers Front" /noconfirm
+<span class="c">// you read it, approve, then confirm=true runs it</span></pre></div>
+      </div>
+      <div class="card">
+        <h3>Limits, stated plainly</h3>
+        <p>Oops is a stack, so older entries cannot be undone while newer ones exist: roll back newest first. <code>ma3_lua</code> is open execution; snippets using <code>Export</code>, <code>Save</code>, <code>SetVar</code>, <code>Keyboard</code>, <code>Mouse</code> or <code>RemoteCommand</code> are flagged because Oops cannot undo them. If the plugin restarts, older undo ids are skipped.</p>
+      </div>
+    </div>
+    <div class="refs" style="margin-top:14px"><b>Manual</b>
+      <a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_oops.html" rel="noopener">Oops keyword</a>
+      <a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_store.html" rel="noopener">Store keyword and its /NoConfirmation option</a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap">
+    <div class="eyebrow">What you can do</div>
+    <h2>Read the show, then change it with confidence.</h2>
+    <p class="sub">Each capability maps to MCP tools and to the part of the official grandMA3 manual (2.5) that documents the underlying console feature. Manual links open help.malighting.com.</p>
+    <div class="cols3">
+
+      <article class="card"><span class="led"></span><h3>Inspect any object</h3>
+        <p>Read the class, every property and the children of any object by address or handle id. No guessing property names.</p>
+        <div class="tools">ma3_inspect &middot; ma3_list &middot; ma3_api</div>
+        <div class="refs"><b>Manual</b><a href="https://help.malighting.com/grandMA3/2.5/HTML/lua_object.html" rel="noopener">Object API</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/lua_handle.html" rel="noopener">Handles</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_helplua.html" rel="noopener">HelpLua</a></div></article>
+
+      <article class="card"><span class="led"></span><h3>Fixtures and patch</h3>
+        <p>List fixtures from the selection, a group or the whole patch with properties and selection-grid position (x/y/z).</p>
+        <div class="tools">ma3_fixtures &middot; ma3_context</div>
+        <div class="refs"><b>Manual</b><a href="https://help.malighting.com/grandMA3/2.5/HTML/patch.html" rel="noopener">Patch and fixture setup</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_fixture.html" rel="noopener">Fixture</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_select.html" rel="noopener">Select</a></div></article>
+
+      <article class="card"><span class="led"></span><h3>Groups</h3>
+        <p>Build groups from 3D positions: split the rig by x, y or z, then store and label the groups so the selection grid follows real positions.</p>
+        <div class="tools">ma3_fixtures &middot; ma3_execute</div>
+        <div class="refs"><b>Manual</b><a href="https://help.malighting.com/grandMA3/2.5/HTML/group.html" rel="noopener">Groups</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/qsg_group.html" rel="noopener">Quick start: groups</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_label.html" rel="noopener">Label</a></div></article>
+
+      <article class="card"><span class="led"></span><h3>Presets</h3>
+        <p>Browse preset pools and preset data, read programmer phasers, and store position presets computed from stage geometry.</p>
+        <div class="tools">ma3_presets &middot; ma3_patterns_generate</div>
+        <div class="refs"><b>Manual</b><a href="https://help.malighting.com/grandMA3/2.5/HTML/presets.html" rel="noopener">Presets</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/qsg_presets.html" rel="noopener">Quick start: presets</a></div></article>
+
+      <article class="card"><span class="led"></span><h3>Sequences and cues</h3>
+        <p>List sequences and cues, see which is selected and which cue is current, and store cues in the selected sequence with plain console syntax.</p>
+        <div class="tools">ma3_sequences &middot; ma3_execute</div>
+        <div class="refs"><b>Manual</b><a href="https://help.malighting.com/grandMA3/2.5/HTML/cue_sequence.html" rel="noopener">Cues and sequences</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/cue_store.html" rel="noopener">Store cues</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/cue_playback.html" rel="noopener">Play back cues</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_sequence.html" rel="noopener">Sequence</a></div></article>
+
+      <article class="card"><span class="led"></span><h3>Command line, validated</h3>
+        <p>Run <code>cmd</code>, <code>set</code> and <code>wait</code> actions with a preview first, using normal grandMA3 command syntax: Store, Assign, Label, Delete and more.</p>
+        <div class="tools">ma3_execute</div>
+        <div class="refs"><b>Manual</b><a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_store.html" rel="noopener">Store</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_assign.html" rel="noopener">Assign</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_delete.html" rel="noopener">Delete</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_label.html" rel="noopener">Label</a></div></article>
+
+      <article class="card"><span class="led"></span><h3>Full Lua, with a safety net</h3>
+        <p>Run any Lua with the console API. One Oops group per call, <code>UndoDisable</code> blocked, <code>Set</code> old values recorded, optional snapshots and inverse scripts. A helper table <code>ma3</code> adds fixtures, walk, find and aim.</p>
+        <div class="tools">ma3_lua &middot; ma3_api</div>
+        <div class="refs"><b>Manual</b><a href="https://help.malighting.com/grandMA3/2.5/HTML/plugins.html" rel="noopener">Plugins and Lua</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_lua.html" rel="noopener">Lua keyword</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/lua_objectfree.html" rel="noopener">Object-free API</a></div></article>
+
+      <article class="card"><span class="led"></span><h3>Journal and rollback</h3>
+        <p>See everything the AI changed, with the code and the rollback strategy, then undo the newest entries.</p>
+        <div class="tools">ma3_journal &middot; ma3_rollback</div>
+        <div class="refs"><b>Manual</b><a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_oops.html" rel="noopener">Oops</a></div></article>
+
+      <article class="card"><span class="led"></span><h3>MVR stage and position patterns</h3>
+        <p>Read a real MVR export (stage deck, trusses, fixtures), estimate stage bounds and audience direction, align to your patch by FixtureID, then learn pan/tilt patterns from presets you programmed by hand and apply them to other groups.</p>
+        <div class="tools">ma3_mvr_load &middot; ma3_mvr_stage &middot; ma3_mvr_align &middot; ma3_mvr_fixtures &middot; ma3_patterns_extract &middot; ma3_patterns &middot; ma3_patterns_generate</div>
+        <div class="refs"><b>Manual</b><a href="https://help.malighting.com/grandMA3/2.5/HTML/patch_mvr.html" rel="noopener">MVR</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_psr.html" rel="noopener">Partial Show Read</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/import-export.html" rel="noopener">Import / export</a></div></article>
+
+      <article class="card"><span class="led"></span><h3>Teach and reuse workflows</h3>
+        <p>Record what you do by hand, let the AI infer a reusable workflow, save it after review and run it later with a preview. Console quirks are kept as persistent notes.</p>
+        <div class="tools">ma3_teach_start &middot; ma3_teach_record &middot; ma3_teach_stop &middot; ma3_workflow_save &middot; ma3_workflow_run &middot; ma3_notes</div>
+        <div class="refs"><b>Manual</b><a href="https://help.malighting.com/grandMA3/2.5/HTML/macros.html" rel="noopener">Macros</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/executor_assign.html" rel="noopener">Assign object to an executor</a></div></article>
+
+      <article class="card"><span class="led"></span><h3>Live API search</h3>
+        <p>Search the Lua API of the exact build you are running, list enums, and check drift against the bundled <code>api_index.json</code>.</p>
+        <div class="tools">ma3_api &middot; tools/sync_api.py</div>
+        <div class="refs"><b>Manual</b><a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_helplua.html" rel="noopener">HelpLua</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/lua_interface.html" rel="noopener">Interface functions</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_version.html" rel="noopener">Version</a></div></article>
+
+      <article class="card"><span class="led"></span><h3>Status and context</h3>
+        <p>Check that the bridge is alive, the plugin and console versions, the current selection and the selected sequence.</p>
+        <div class="tools">ma3_status &middot; ma3_context</div>
+        <div class="refs"><b>Manual</b><a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_plugin.html" rel="noopener">Plugin keyword</a></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section id="install" class="alt">
+  <div class="wrap">
+    <div class="eyebrow">Installation</div>
+    <h2>Three parts, about ten minutes.</h2>
+    <p class="sub">Part A installs the engine inside grandMA3 onPC. Part B or C connects your AI client to it.</p>
+
+    <h3>Prerequisites</h3>
+    <ul class="check">
+      <li>grandMA3 onPC on macOS or Windows, tested on <strong>2.5.1.0</strong>. Other builds may work, but verify on the exact version you use.</li>
+      <li><strong>Python 3</strong> on the same computer (<code>python3 --version</code>, or <code>python --version</code> on Windows). No pip packages are needed.</li>
+      <li>An MCP-capable AI client: Claude Desktop, Claude Code, Codex CLI, or ChatGPT through a tunnel (Part C).</li>
+      <li>The onPC computer and the AI client run on the <strong>same machine</strong>, because the bridge is localhost only.</li>
+      <li>A <strong>copy of your showfile</strong> to experiment on.</li>
+    </ul>
+
+    <p><a class="btn primary" href="https://github.com/juandozuna/grandma3_ai_plugin/releases/latest/download/grandma3-ai-plugin.zip">Download grandma3-ai-plugin.zip</a>
+       &nbsp; <a href="https://github.com/juandozuna/grandma3_ai_plugin/releases/latest" rel="noopener">Release notes</a></p>
+    <p style="color:var(--mute)">Unzip it somewhere permanent, for example <code>~/grandma3-ai-plugin</code> on macOS or <code>C:\grandma3-ai-plugin</code> on Windows. Your AI client will launch files from this folder, so do not move it afterwards without updating the client config. The server writes <code>journal.json</code> and <code>snapshots/</code> next to itself.</p>
+
+    <!-- PART A -->
+    <div class="part" id="part-a">
+      <div class="part-h"><span class="badge">A</span><h3 style="margin:0;font-size:1.5rem">Install the engine in grandMA3 onPC</h3></div>
+      <p style="color:var(--mute)">The plugin is a Lua component that opens the localhost bridge. Based on the manual's <a href="https://help.malighting.com/grandMA3/2.5/HTML/plugins.html" rel="noopener">Plugins</a> topic.</p>
+      <ol class="steps">
+        <li><strong>Copy the plugin files into the plugins library folder</strong>
+          <p>Put <code>grandma3_ai_assistant.xml</code> and <code>grandma3_ai_assistant.lua</code> together in <code>gma3_library/datapools/plugins</code> of the drive you import from. The manual says the XML and any extra Lua files must be in that folder (<a href="https://help.malighting.com/grandMA3/2.5/HTML/fm_folder_structure.html" rel="noopener">Folder structure</a>).</p>
+          <div class="tabs">
+            <div role="tablist" aria-label="Operating system">
+              <button role="tab" id="t-a1" aria-controls="p-a1" aria-selected="true">macOS</button>
+              <button role="tab" id="t-a2" aria-controls="p-a2" aria-selected="false" tabindex="-1">Windows</button>
+            </div>
+            <div role="tabpanel" id="p-a1" aria-labelledby="t-a1"><div class="code"><pre>cd ~/grandma3-ai-plugin
+cp grandma3_ai_assistant.xml grandma3_ai_assistant.lua \
+   ~/MALightingTechnology/gma3_library/datapools/plugins/</pre></div></div>
+            <div role="tabpanel" id="p-a2" aria-labelledby="t-a2" hidden><div class="code"><pre>cd C:\grandma3-ai-plugin
+copy grandma3_ai_assistant.xml C:\ProgramData\MALightingTechnology\gma3_library\datapools\plugins\
+copy grandma3_ai_assistant.lua C:\ProgramData\MALightingTechnology\gma3_library\datapools\plugins\</pre></div></div>
+          </div>
+          <div class="note">These are the default onPC locations listed in the manual (macOS: <code>[System HD]/Users/[User Name]/MALightingTechnology</code>, Windows: <code>C:\ProgramData\MALightingTechnology</code>). The manual also notes <code>gma3_library</code> sits inside that main folder. If you use a USB drive instead, the root folder is named <code>grandMA3</code>.</div>
+        </li>
+        <li><strong>Open the Plugin Pool and create a new plugin</strong>
+          <p>Open (or add) a Plugin Pool window through the <em>Add Window</em> pop-up, then edit an empty pool object using any edit method, for example <code>Edit Plugin 1</code> on the command line. The <em>Edit UserPlugin</em> pop-up opens. Pick a free number; this guide calls it <code>&lt;n&gt;</code>.</p>
+          <div class="refs"><b>Manual</b><a href="https://help.malighting.com/grandMA3/2.5/HTML/plugins.html" rel="noopener">Plugins: create a new plugin</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/wvm_add_window.html" rel="noopener">Add window</a></div>
+        </li>
+        <li><strong>Import the XML</strong>
+          <p>In the editor tap <strong>Import</strong>, select the drive and <code>grandma3_ai_assistant.xml</code>, tap <strong>Import</strong> again, then close the editor. The plugin appears as <em>grandMA3 AI Assistant</em> with one Lua component named <em>Assistant</em>.</p>
+          <div class="note warn"><b>If the import cannot find the Lua file:</b> the manifest declares <code>Path="grandma3_ai_plugin"</code>, so also try copying the <code>.lua</code> file into a <code>grandma3_ai_plugin</code> subfolder of the plugins folder. As a last resort, create the plugin by hand: add a <em>New Component Lua</em>, open it, paste the whole contents of <code>grandma3_ai_assistant.lua</code>, and name the plugin exactly <code>grandMA3 AI Assistant</code> (the plugin's Stop macro refers to this name).</div>
+        </li>
+        <li><strong>Start the bridge</strong>
+          <p>Run the plugin once in the showfile, from the command line:</p>
+          <div class="code"><pre>Plugin &lt;n&gt; "Start"</pre></div>
+          <p>or tap the plugin in the pool (the default argument is <code>Start</code>). The system monitor prints:</p>
+          <div class="code"><pre>grandMA3 AI Assistant: MCP bridge 2.0.0 listening on 127.0.0.1:17844</pre></div>
+          <p>On the first start the plugin also creates a macro named <code>Stop AI Assistant</code> in the first free macro slot (unless one already exists).</p>
+          <div class="refs"><b>Manual</b><a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_plugin.html" rel="noopener">Plugin keyword</a></div>
+        </li>
+        <li><strong>Verify the port</strong>
+          <p>Without the AI client, check that something is listening on the bridge port:</p>
+          <div class="tabs">
+            <div role="tablist" aria-label="Verify command">
+              <button role="tab" id="t-v1" aria-controls="p-v1" aria-selected="true">macOS / Linux</button>
+              <button role="tab" id="t-v2" aria-controls="p-v2" aria-selected="false" tabindex="-1">Windows</button>
+            </div>
+            <div role="tabpanel" id="p-v1" aria-labelledby="t-v1"><div class="code"><pre>cd ~/grandma3-ai-plugin
+./run_mcp_server.sh --check
+<span class="c"># OK: grandMA3 bridge reachable at 127.0.0.1:17844</span>
+
+<span class="c"># or, by hand:</span>
+lsof -iTCP:17844 -sTCP:LISTEN</pre></div></div>
+            <div role="tabpanel" id="p-v2" aria-labelledby="t-v2" hidden><div class="code"><pre>netstat -ano | findstr 17844
+<span class="c"># or, in PowerShell:</span>
+Test-NetConnection 127.0.0.1 -Port 17844</pre></div></div>
+          </div>
+        </li>
+        <li><strong>Auto-start, stop and reload</strong>
+          <p><strong>Stop</strong> the bridge with the generated macro <code>Stop AI Assistant</code>, or on the command line:</p>
+          <div class="code"><pre>Plugin &lt;n&gt; "Stop"</pre></div>
+          <p><strong>Reload</strong> after editing the Lua: stop, then start again. If you edit external Lua files, <a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_reloadallplugins.html" rel="noopener">ReloadAllPlugins</a> rereads them from disk first (and the component's <em>InStream</em>/file update setting must allow it, see the Plugins topic).</p>
+          <div class="code"><pre>Plugin &lt;n&gt; "Stop"
+ReloadAllPlugins
+Plugin &lt;n&gt; "Start"</pre></div>
+          <p><strong>Auto-start.</strong> The plugin has no built-in on-load hook, and I did not find a documented show-load trigger in the manual, so this guide does not promise one. The reliable way is one click: create a macro whose line is <code>Plugin &lt;n&gt; "Start"</code> and assign it to an executor or view button, then tap it after loading the show.</p>
+          <div class="refs"><b>Manual</b><a href="https://help.malighting.com/grandMA3/2.5/HTML/macros.html" rel="noopener">Macros</a><a href="https://help.malighting.com/grandMA3/2.5/HTML/executor_assign.html" rel="noopener">Assign object to an executor</a></div>
+          <div class="note">The Lua state is not saved in the showfile, so after reopening a show or restarting onPC you must start the bridge again.</div>
+        </li>
+      </ol>
+    </div>
+
+    <!-- PART B -->
+    <div class="part" id="part-b">
+      <div class="part-h"><span class="badge">B</span><h3 style="margin:0;font-size:1.5rem">Install the MCP server in Claude</h3></div>
+      <p style="color:var(--mute)">Claude launches <code>companion_server.py</code> itself over stdio. Replace the folder in each command with where you unzipped the release.</p>
+      <div class="tabs">
+        <div role="tablist" aria-label="Claude client">
+          <button role="tab" id="t-b1" aria-controls="p-b1" aria-selected="true">Claude Desktop (macOS)</button>
+          <button role="tab" id="t-b2" aria-controls="p-b2" aria-selected="false" tabindex="-1">Claude Desktop (Windows)</button>
+          <button role="tab" id="t-b3" aria-controls="p-b3" aria-selected="false" tabindex="-1">Claude Code</button>
+        </div>
+        <div role="tabpanel" id="p-b1" aria-labelledby="t-b1">
+          <p>Open <em>Claude &rarr; Settings &rarr; Developer &rarr; Edit Config</em>, or edit this file directly:</p>
+          <div class="code"><div class="lbl">~/Library/Application Support/Claude/claude_desktop_config.json</div><pre>{
+  "mcpServers": {
+    "grandma3": {
+      "command": "python3",
+      "args": ["/Users/YOU/grandma3-ai-plugin/companion_server.py"]
+    }
+  }
+}</pre></div>
+          <p>If Claude Desktop cannot find <code>python3</code>, use the absolute path from <code>which python3</code>. The bundled launcher is an alternative that also warns on stderr when the bridge is down:</p>
+          <div class="code"><pre>"command": "/bin/bash",
+"args": ["/Users/YOU/grandma3-ai-plugin/run_mcp_server.sh"]</pre></div>
+          <p>Quit and reopen Claude Desktop completely after saving.</p>
+        </div>
+        <div role="tabpanel" id="p-b2" aria-labelledby="t-b2" hidden>
+          <p>Edit this file (create it if missing):</p>
+          <div class="code"><div class="lbl">%APPDATA%\Claude\claude_desktop_config.json</div><pre>{
+  "mcpServers": {
+    "grandma3": {
+      "command": "python",
+      "args": ["C:\\grandma3-ai-plugin\\companion_server.py"]
+    }
+  }
+}</pre></div>
+          <div class="note">Backslashes must be doubled in JSON. If <code>python</code> is not on PATH, use the full path to <code>python.exe</code>, or the launcher <code>"command": "py", "args": ["-3", "C:\\grandma3-ai-plugin\\companion_server.py"]</code>. Do not use <code>run_mcp_server.sh</code> on Windows unless you have Git Bash or WSL set up.</div>
+          <p>Quit Claude Desktop from the system tray and reopen it.</p>
+        </div>
+        <div role="tabpanel" id="p-b3" aria-labelledby="t-b3" hidden>
+          <div class="code"><div class="lbl">macOS / Linux</div><pre>claude mcp add grandma3 --scope user -- python3 ~/grandma3-ai-plugin/companion_server.py
+claude mcp list</pre></div>
+          <div class="code"><div class="lbl">Windows (PowerShell)</div><pre>claude mcp add grandma3 --scope user -- python C:\grandma3-ai-plugin\companion_server.py
+claude mcp list</pre></div>
+          <p>Drop <code>--scope user</code> to register it for the current project only. Inside Claude Code, <code>/mcp</code> shows the connection state.</p>
+        </div>
+      </div>
+
+      <h4 style="margin:22px 0 6px">Verify with <code>ma3_status</code></h4>
+      <p style="color:var(--mute)">With the bridge running (Part A), start a new chat and ask:</p>
+      <div class="prompt">Call ma3_status and tell me whether the grandMA3 bridge is running, the plugin version and the console version.</div>
+      <p style="color:var(--mute)">A healthy reply reports the bridge as running, plugin version <code>2.0.0</code> and your onPC version. If Claude lists the <code>ma3_*</code> tools but <code>ma3_status</code> fails, the MCP server works and the plugin is simply not running; go back to step 4 of Part A.</p>
+    </div>
+
+    <!-- PART C -->
+    <div class="part" id="part-c">
+      <div class="part-h"><span class="badge">C</span><h3 style="margin:0;font-size:1.5rem">Install in ChatGPT / OpenAI and other clients</h3></div>
+      <div class="note warn"><b>Be clear about the limit:</b> ChatGPT connectors use <em>remote</em> MCP servers, while this server is a local stdio process that can only reach a localhost bridge. The repo's answer is a tunnel mode built on OpenAI's Secure MCP Tunnel (<code>tunnel-client</code>). I could not test it against a live ChatGPT account, so treat the ChatGPT-side steps as pointers to OpenAI's own documentation.</div>
+      <div class="tabs">
+        <div role="tablist" aria-label="OpenAI and other clients">
+          <button role="tab" id="t-c1" aria-controls="p-c1" aria-selected="true">ChatGPT (tunnel)</button>
+          <button role="tab" id="t-c2" aria-controls="p-c2" aria-selected="false" tabindex="-1">Codex CLI</button>
+          <button role="tab" id="t-c3" aria-controls="p-c3" aria-selected="false" tabindex="-1">Other MCP clients</button>
+        </div>
+        <div role="tabpanel" id="p-c1" aria-labelledby="t-c1">
+          <p>What <code>start_grandma3_mcp.sh --tunnel</code> does, taken from the script:</p>
+          <ul style="color:var(--mute)">
+            <li>Checks that the bridge answers on <code>127.0.0.1:17844</code> (skip with <code>--skip-bridge-check</code>).</li>
+            <li>Requires <code>tunnel-client</code> on your PATH and a tunnel ID from OpenAI (<code>--tunnel-id</code> or the <code>TUNNEL_ID</code> variable).</li>
+            <li>Reads your OpenAI control-plane key from <code>CONTROL_PLANE_API_KEY</code> or prompts for it hidden. It never writes the key to disk.</li>
+            <li>If the profile does not exist, runs <code>tunnel-client init --sample sample_mcp_stdio_local</code> with <code>python3 companion_server.py</code> as the MCP command, then <code>tunnel-client doctor</code>, then <code>tunnel-client run</code>.</li>
+          </ul>
+          <div class="code"><pre>cd ~/grandma3-ai-plugin
+
+<span class="c"># 1. Plugin must already be running in onPC (Part A)</span>
+<span class="c"># 2. Validate only, without starting the tunnel:</span>
+./start_grandma3_mcp.sh --tunnel --tunnel-id tunnel_your_id --doctor-only
+
+<span class="c"># 3. Run it (keep this terminal open):</span>
+export CONTROL_PLANE_API_KEY="..."   <span class="c"># or let the script prompt you</span>
+./start_grandma3_mcp.sh --tunnel --tunnel-id tunnel_your_id</pre></div>
+          <p>Options: <code>--profile NAME</code> (default <code>grandma3-local</code>), <code>--plugin-port PORT</code>, <code>--doctor-only</code>, <code>-h</code>.</p>
+          <p><strong>Then, in ChatGPT:</strong> add the tunnel as an MCP connector following OpenAI's documentation for Secure MCP Tunnel and custom connectors. Availability depends on your plan and workspace settings, and I have not verified those screens, so they are not reproduced here.</p>
+          <div class="note"><b>Limitations.</b> The script is Bash: use macOS, Linux, WSL or Git Bash (there is no native Windows launcher). ChatGPT only works while the tunnel terminal, onPC and the plugin are all running on your computer. The bridge itself still never leaves localhost; only the MCP server is exposed through the tunnel, so anyone able to use that connector can drive your show. Share it only with people you trust. Local mode, by contrast, needs no tunnel, key or internet.</div>
+        </div>
+        <div role="tabpanel" id="p-c2" aria-labelledby="t-c2" hidden>
+          <p>Codex CLI can start local stdio MCP servers directly. Add this to <code>~/.codex/config.toml</code>:</p>
+          <div class="code"><pre>[mcp_servers.grandma3]
+command = "python3"
+args = ["/Users/YOU/grandma3-ai-plugin/companion_server.py"]</pre></div>
+          <p>On Windows use <code>command = "python"</code> and a path such as <code>'C:\grandma3-ai-plugin\companion_server.py'</code> (single quotes avoid escaping backslashes in TOML). Restart Codex, then ask it to call <code>ma3_status</code>. Newer Codex versions may also offer <code>codex mcp add</code>; check <code>codex mcp --help</code> for your version.</p>
+        </div>
+        <div role="tabpanel" id="p-c3" aria-labelledby="t-c3" hidden>
+          <p>Any client that can launch a stdio MCP server works. The whole contract is: run this command, speak MCP on stdin/stdout.</p>
+          <div class="code"><pre>python3 /path/to/grandma3-ai-plugin/companion_server.py</pre></div>
+          <p>Optional environment variables for the MCP process (local troubleshooting only): <code>GRANDMA3_AI_PLUGIN_HOST</code> and <code>GRANDMA3_AI_PLUGIN_PORT</code>. Exposing the bridge to a network is intentionally unsupported. Files are written next to the server unless you override <code>GRANDMA3_AI_NOTES_PATH</code>, <code>GRANDMA3_AI_JOURNAL_PATH</code>, <code>GRANDMA3_AI_PATTERNS</code> or <code>GRANDMA3_AI_STAGE</code>.</p>
+          <p>Use <code>./start_grandma3_mcp.sh</code> (local mode, no flags) to check the bridge and launch the same server; <code>--doctor-only</code> validates without running it.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHECKLIST -->
+    <div class="part">
+      <h3 style="font-size:1.5rem">First-run checklist</h3>
+      <ul class="check">
+        <li>Working on a <strong>copy</strong> of the showfile, saved.</li>
+        <li>onPC shows <em>MCP bridge 2.0.0 listening on 127.0.0.1:17844</em> in the system monitor.</li>
+        <li>The AI client lists the <code>ma3_*</code> tools.</li>
+        <li><code>ma3_status</code> reports the bridge as running.</li>
+        <li><code>ma3_context</code> returns your selection or selected sequence.</li>
+        <li>A harmless <code>ma3_execute</code> preview (<code>confirm=false</code>) returns the plan without changing anything.</li>
+        <li>You know where <code>journal.json</code> lives and how to ask for <code>ma3_rollback</code>.</li>
+      </ul>
+    </div>
+
+    <div class="part">
+      <h3 style="font-size:1.5rem">Example prompts</h3>
+      <div class="prompt">Call ma3_status, then ma3_context, and summarise my selection and the selected sequence.</div>
+      <div class="prompt">List all fixtures in the patch with name, FID and position, and propose groups for front, mid and back rows. Preview the commands before running anything.</div>
+      <div class="prompt">Store 5 cues in the selected sequence from my current programmer content and label them Verse 1 to Verse 5. Preview first.</div>
+      <div class="prompt">Show me everything you changed in this session with ma3_journal, then roll back the last two entries.</div>
+      <div class="prompt">I will give you an MVR export. Load it, estimate the stage and audience direction, tell me how confident you are, and align it to my patch.</div>
+    </div>
+
+    <!-- TROUBLESHOOTING -->
+    <div class="part" id="troubleshooting">
+      <h3 style="font-size:1.5rem">Troubleshooting</h3>
+      <div class="tbl"><table>
+        <thead><tr><th>Symptom</th><th>Likely cause and fix</th></tr></thead>
+        <tbody>
+          <tr><td><code>ma3_status</code> fails, tools are visible</td><td>The plugin is not running. Run <code>Plugin &lt;n&gt; "Start"</code>; confirm with <code>./run_mcp_server.sh --check</code> or <code>netstat</code>/<code>lsof</code>.</td></tr>
+          <tr><td>Warning: bridge not reachable</td><td>Printed by the launcher on stderr. Harmless if you start the plugin afterwards; the server connects per request.</td></tr>
+          <tr><td><code>cannot bind bridge</code> in the system monitor</td><td>Port 17844 is taken, usually by an instance already running. Stop it (<code>Plugin &lt;n&gt; "Stop"</code>) and start again.</td></tr>
+          <tr><td><code>LuaSocket is unavailable</code></td><td>The plugin needs the <code>socket</code> Lua module from onPC. The build you are on does not expose it; this plugin cannot run there. Verify on onPC 2.5.1.0.</td></tr>
+          <tr><td>Import cannot find the Lua file</td><td>Both files must be in <code>gma3_library/datapools/plugins</code> (see the note in Part A step 3), or paste the Lua into a new component by hand.</td></tr>
+          <tr><td>A command times out</td><td>A console dialog is waiting. Commands should carry <code>/noconfirm</code>; the MCP adds it automatically, but macros stored in the show are not covered.</td></tr>
+          <tr><td>Client says the server failed to start</td><td>Wrong path or <code>python3</code> not found by the GUI app. Use absolute paths, restart the client fully, and try the command in a terminal.</td></tr>
+          <tr><td>Rollback skipped entries</td><td>Oops is a stack: roll back newest first, or pass <code>force_oops</code>. Entries from before a plugin restart cannot be undone with Oops.</td></tr>
+          <tr><td>After reopening the show it stopped working</td><td>The Lua state is not stored in the show. Start the plugin again.</td></tr>
+          <tr><td>Behaviour changed after an onPC update</td><td>Re-run <code>ma3_api</code> with <code>drift=true</code> to compare the live API with <code>api_index.json</code>, and re-verify on a copy.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="eyebrow">FAQ</div>
+    <h2>Questions people ask first.</h2>
+    <details><summary>Is this official or affiliated with MA Lighting?</summary><div><p>No. It is an independent, unofficial community project. grandMA3 and MA Lighting are trademarks of their owners. MA Lighting's technical support does not cover plugins or Lua scripts (see the <a href="https://help.malighting.com/grandMA3/2.5/HTML/plugins.html" rel="noopener">Plugins topic</a>).</p></div></details>
+    <details><summary>Does it run on a real console or only onPC?</summary><div><p>It is built and tested for grandMA3 onPC 2.5.1.0 only, because the bridge uses a localhost socket and the AI client runs on the same computer.</p></div></details>
+    <details><summary>Do I need an OpenAI or Anthropic API key?</summary><div><p>Not for this project. The AI client you use supplies its own model and credentials. Only tunnel mode needs an OpenAI control-plane key, which is read from your environment or terminal and never written to disk.</p></div></details>
+    <details><summary>Can the AI delete or break my show?</summary><div><p>It can change what the commands and Lua you approve can change. Previews, <code>/noconfirm</code> handling, Oops groups, the journal and snapshots exist to reduce the risk, but <code>ma3_lua</code> is open execution and some operations cannot be undone. Work on a copy, save often and read previews.</p></div></details>
+    <details><summary>Does my show data leave my computer?</summary><div><p>The bridge and the MCP server are local. What your AI client sends to its model provider is whatever tool results the conversation includes, such as fixture names and properties. Check your provider's data policy. The journal and snapshots stay on disk next to the server.</p></div></details>
+    <details><summary>Why does the server append /noconfirm?</summary><div><p>Console confirmation popups block a bridge call until someone taps them. Appending <code>/noconfirm</code> avoids that. The Store manual lists the option as <code>/NoConfirmation</code>; see the <a href="https://help.malighting.com/grandMA3/2.5/HTML/keyword_store.html" rel="noopener">Store keyword</a>.</p></div></details>
+    <details><summary>Does it need pip packages or Node?</summary><div><p>No. The MCP server, MVR reader and pattern learner are pure Python standard library.</p></div></details>
+    <details><summary>Which license is it under?</summary><div><p>The repository does not declare a license yet. Check the <a href="https://github.com/juandozuna/grandma3_ai_plugin" rel="noopener">repository</a> before redistributing.</p></div></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><a class="btn primary" href="https://github.com/juandozuna/grandma3_ai_plugin/releases/latest/download/grandma3-ai-plugin.zip">Download grandma3-ai-plugin.zip</a> &nbsp;
+       <a href="https://github.com/juandozuna/grandma3_ai_plugin" rel="noopener">Source on GitHub</a> &middot;
+       <a href="https://github.com/juandozuna/grandma3_ai_plugin/issues" rel="noopener">Issues</a> &middot;
+       <a href="https://help.malighting.com/grandMA3/2.5/HTML/plugins.html" rel="noopener">grandMA3 manual: Plugins</a></p>
+    <p class="disc">Unofficial. This project is not affiliated with, endorsed by or supported by MA Lighting International GmbH. grandMA3 is a trademark of MA Lighting. Manual references point to the official grandMA3 2.5 user manual. Plugins can reach deep into the console; MA Lighting does not guarantee plugin compatibility across software releases. Test on a copy of your showfile and verify on your exact onPC version.</p>
+  </div>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>

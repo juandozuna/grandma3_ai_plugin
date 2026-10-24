@@ -4,3 +4,6 @@ __pycache__/
 # show-specific runtime data
 snapshots/
 journal.json
+dist/
+stage.json
+position_patterns.json
