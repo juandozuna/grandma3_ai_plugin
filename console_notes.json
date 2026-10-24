@@ -1,0 +1,4 @@
+[
+  "User preference: always append /noconfirm to Store/Delete/Assign commands. Without it, storing can pop a dialog on the console and the bridge call times out.",
+  "User preference: append /noconfirm to every grandMA3 command that supports it, including each Store/Delete/Assign/Label/Copy/SaveShow command in batches, cue commands and macros. For explicitly authorized work or an approved implementation plan, preview then execute without asking again for each command. Console /noconfirm suppresses interactive popups; MCP confirm=true is the separate execution flag."
+]

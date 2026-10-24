@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GMA3 DataVersion="2.5.1.0">
+  <Plugin Name="grandMA3 AI Assistant" Author="Local onPC plugin" Version="2.0.0" Path="grandma3_ai_plugin">
+    <ComponentLua Name="Assistant" Installed="Yes" InStream="No" FileName="grandma3_ai_assistant.lua" />
+  </Plugin>
+</GMA3>

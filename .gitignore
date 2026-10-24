@@ -1,0 +1,6 @@
+__pycache__/
+.DS_Store
+*.pyc
+# show-specific runtime data
+snapshots/
+journal.json
