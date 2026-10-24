@@ -71,13 +71,14 @@ h3{font-size:1.2rem;margin:0 0 8px}
 .cols2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 @media(max-width:900px){.cols3{grid-template-columns:1fr 1fr}}
 @media(max-width:620px){.cols3,.cols2{grid-template-columns:1fr}}
+.cols3>*,.cols2>*{min-width:0}
 .card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:var(--r);padding:20px;position:relative}
 .card .led{position:absolute;top:18px;right:18px;width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
 .card p{color:var(--mute);margin:6px 0 12px;font-size:.95rem}
 .tools{font-family:var(--mono);font-size:.76rem;color:var(--cyan);margin:0 0 10px;word-break:break-word}
 .refs{font-size:.82rem;color:var(--dim);border-top:1px dashed var(--line2);padding-top:10px}
 .refs b{color:var(--mute);font-weight:600;margin-right:4px;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase}
-.refs a{color:#8fb7ff;margin-right:6px;white-space:nowrap}
+.refs a{color:#8fb7ff;display:inline-block;margin:0 10px 2px 0}
 
 /* architecture */
 .arch{background:#05060a;border:1px solid var(--line);border-radius:16px;padding:18px;overflow-x:auto}
